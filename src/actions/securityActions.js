@@ -4,8 +4,8 @@ import setJwtToken from "../securityUtils/setJwtToken";
 import jwt_decode from 'jwt-decode';
 
 //Endpoint urls
-const USER_REGISTRATION_PATH = "/api/users/register";
-const USER_LOGIN_PATH = "/api/users/login";
+const USER_REGISTRATION_PATH = "/api/v1/users/register";
+const USER_LOGIN_PATH = "/api/v1/users/login";
 
 let timeoutId;
 
