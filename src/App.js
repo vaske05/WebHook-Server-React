@@ -6,10 +6,12 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Header from "./components/layout/Header";
 import Landing from "./components/layout/Landing";
 import Register from "./components/userManagement/Register";
+import Login from "./components/userManagement/Login";
 import store from "./store";
 import jwt_decode from 'jwt-decode';
 import {SET_CURRENT_USER} from "./actions/types";
 import setJwtToken from "./securityUtils/setJwtToken";
+import {startLogoutTimer} from "./actions/securityActions";
 
 
 
@@ -24,7 +26,7 @@ if(token) {
         type: SET_CURRENT_USER,
         payload: decodedToken
     });
-    //startLogoutTimer(decodedToken.exp)(store.dispatch); TODO: check this
+    startLogoutTimer(decodedToken.exp)(store.dispatch); // TODO: check this
 }
 
 function App() {
@@ -37,7 +39,7 @@ function App() {
             { /* Public Routes */ }
             <Route exact path="/" component={Landing}/>
             <Route exact path="/register" component={Register}/>
-            {/*<Route exact path="/login" component={Login}></Route>*/}
+            <Route exact path="/login" component={Login}/>
 
             {/*Private Routes*/}
 
