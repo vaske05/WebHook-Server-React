@@ -2,7 +2,7 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"; // Bootstrap import
 
 import {Provider} from "react-redux";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Header from "./components/layout/Header";
 import Landing from "./components/layout/Landing";
 import Register from "./components/userManagement/Register";
@@ -12,7 +12,8 @@ import jwt_decode from 'jwt-decode';
 import {SET_CURRENT_USER} from "./actions/types";
 import setJwtToken from "./securityUtils/setJwtToken";
 import {startLogoutTimer} from "./actions/securityActions";
-
+import SecuredRoute from "./securityUtils/SecureRoute";
+import Dashboard from "./components/Dashboard";
 
 
 /*
@@ -26,7 +27,7 @@ if(token) {
         type: SET_CURRENT_USER,
         payload: decodedToken
     });
-    startLogoutTimer(decodedToken.exp)(store.dispatch); // TODO: check this
+    startLogoutTimer(decodedToken.exp)(store.dispatch);
 }
 
 function App() {
@@ -36,12 +37,15 @@ function App() {
           <div className="App">
             <Header/>
 
-            { /* Public Routes */ }
+            { /* Public Routes */}
             <Route exact path="/" component={Landing}/>
             <Route exact path="/register" component={Register}/>
             <Route exact path="/login" component={Login}/>
 
-            {/*Private Routes*/}
+            { /*Private Routes*/}
+            <Switch>
+              <SecuredRoute exact path="/dashboard" component={Dashboard}/>
+            </Switch>
 
           </div>
         </Router>
