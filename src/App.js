@@ -1,6 +1,6 @@
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css"; // Bootstrap import
-
+import React from 'react';
 import {Provider} from "react-redux";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Header from "./components/layout/Header";
@@ -14,6 +14,7 @@ import setJwtToken from "./securityUtils/setJwtToken";
 import {startLogoutTimer} from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/SecureRoute";
 import Dashboard from "./components/Dashboard";
+import AddWebHook from "./components/webHook/AddWebHook";
 
 
 /*
@@ -45,6 +46,8 @@ function App() {
             { /*Private Routes*/}
             <Switch>
               <SecuredRoute exact path="/dashboard" component={Dashboard}/>
+              <SecuredRoute exact path="/addWebHook" component={AddWebHook}/>
+
             </Switch>
 
           </div>
