@@ -1,10 +1,11 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 // import ProjecItem from "./Project/ProjecItem";
 // import CreateProjectButton from "./Project/CreateProjectButton";
 import PropTypes from 'prop-types';
 // import {gelAllProjects} from '../actions/projectActions';
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import Loader from "./layout/Loader";
+import CreateWebHookButton from "./webHook/CreateWebHookButton";
 
 
 class Dashboard extends Component {
@@ -44,9 +45,9 @@ class Dashboard extends Component {
           <div className="row">
             <div className="col-md-12">
               <h1 className="display-4 text-center">Web Hooks</h1>
-              <br />
-              {/*<CreateProjectButton></CreateProjectButton>*/}
-              <br />
+              <br/>
+              <CreateWebHookButton></CreateWebHookButton>
+              <br/>
               <hr />
 
               {
