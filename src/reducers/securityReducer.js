@@ -11,7 +11,7 @@ const isAuthenticated = payload => {
     return !isEmpty(payload);
 }
 
-export default function (state=initial_state, action) {
+export default function securityReducer(state = initial_state, action) {
     switch (action.type) {
         case SET_CURRENT_USER:
             return {
