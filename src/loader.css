@@ -12,7 +12,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background:  /*#a6a6a6*//*#231F20*/  #666666;
+  background: /*#a6a6a6*//*#231F20*/ #28a745;
   animation: lds-grid 1.2s linear infinite;
 }
 .lds-grid div:nth-child(1) {

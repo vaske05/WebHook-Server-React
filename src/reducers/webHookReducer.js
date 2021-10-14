@@ -5,7 +5,7 @@ const initialState = {
   webHook: {}
 }
 
-export default function (state = initialState, action) {
+export default function webHookReducer(state = initialState, action) {
   switch (action.type) {
     case GET_WEBHOOKS:
       return { // returning an object
