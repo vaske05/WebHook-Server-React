@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { createNewUser } from "../../actions/securityActions";
+import {createNewUser} from "../../actions/securityActions";
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
@@ -109,10 +109,12 @@ class Register extends Component {
                                            onChange={this.onChange}
                                     />
                                     {
-                                        errors.confirmPassword && (<div className="invalid-feedback">{errors.confirmPassword}</div>)
+                                        errors.confirmPassword && (
+                                            <div className="invalid-feedback">{errors.confirmPassword}</div>)
                                     }
                                 </div>
-                                <input type="submit" className="btn btn-info btn-block mt-4 font-weight-bold" value="Sign Up"/>
+                                <input type="submit" className="btn btn-success btn-block mt-4 font-weight-bold"
+                                       value="Sign Up"/>
                             </form>
                         </div>
                     </div>
