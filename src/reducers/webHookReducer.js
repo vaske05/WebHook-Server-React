@@ -20,7 +20,7 @@ export default function webHookReducer(state = initialState, action) {
     case DELETE_WEBHOOK:
       return {
         ...state,
-        webHooks: state.webHooks.filter(webHook => webHook.webHookIdentifier !== action.payload)
+        webHooks: state.webHooks.filter(webHook => webHook.id !== action.payload)
       };
     default:
       return state;

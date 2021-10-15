@@ -23,7 +23,7 @@ class AddWebHook extends Component {
   }
 
   //life cycle hooks
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.errors) {
       this.setState({errors: nextProps.errors});
     }
@@ -54,7 +54,7 @@ class AddWebHook extends Component {
 
   render() {
     const {errors} = this.state; // mapping "this.state.errors" to "errors" constant
-    const options = [
+    const whTypes = [
       {value: 'AIR_DATA', label: 'AIR_DATA', name: "type"},
       {value: 'COVID_DATA', label: 'COVID_DATA', name: "type"}
     ]
@@ -72,12 +72,10 @@ class AddWebHook extends Component {
                     <h6>Select Web Hook type:</h6>
                     <Select className={classnames("", {
                       "is-invalid border-input-red": errors.type,
-                    })} options={options} name="type" defaultValue={this.state.type} onChange={this.onChangeSelect}/>
+                    })} options={whTypes} name="type" defaultValue={this.state.type} onChange={this.onChangeSelect}/>
                     {errors.type && (
                         <div className="invalid-feedback">{errors.type}</div>
                     )}
-
-
                   </div>
 
                   <div className="form-group">

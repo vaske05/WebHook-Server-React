@@ -7,8 +7,8 @@ import {deleteWebHook} from "../../actions/webHookActions";
 
 class WebHookItem extends Component {
 
-  onDeleteClick = webHookIdentifier => {
-    this.props.deleteWebHook(webHookIdentifier);
+  onDeleteClick = webHook => {
+    this.props.deleteWebHook(webHook);
   }
 
   render() {
@@ -34,7 +34,7 @@ class WebHookItem extends Component {
                       <i className="fa fa-edit pr-1"> Update</i>
                     </li>
                   </Link>
-                  <li onClick={this.onDeleteClick.bind(this, webHook.id)}
+                  <li onClick={this.onDeleteClick.bind(this, webHook)}
                       className="list-group-item delete">
                     <i className="fa fa-minus-circle pr-1"> Delete</i>
                   </li>
