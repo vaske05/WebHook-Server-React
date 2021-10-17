@@ -7,8 +7,8 @@ import {deleteWebHook} from "../../actions/webHookActions";
 
 class WebHookItem extends Component {
 
-  onDeleteClick = webHookIdentifier => {
-    this.props.deleteWebHook(webHookIdentifier);
+  onDeleteClick = webHook => {
+    this.props.deleteWebHook(webHook);
   }
 
   render() {
@@ -24,8 +24,10 @@ class WebHookItem extends Component {
               </div>
               <div className="col-lg-6 col-md-4 col-8">
                 <h3>{webHook.name}</h3>
-                <h10>{webHook.url}</h10>
-                <p>{webHook.type}</p>
+                <ul>
+                  <li>{webHook.url}</li>
+                  <li>{webHook.type}</li>
+                </ul>
               </div>
               <div className="col-md-4 d-none d-lg-block">
                 <ul className="list-group">
@@ -34,7 +36,7 @@ class WebHookItem extends Component {
                       <i className="fa fa-edit pr-1"> Update</i>
                     </li>
                   </Link>
-                  <li onClick={this.onDeleteClick.bind(this, webHook.id)}
+                  <li onClick={this.onDeleteClick.bind(this, webHook)}
                       className="list-group-item delete">
                     <i className="fa fa-minus-circle pr-1"> Delete</i>
                   </li>

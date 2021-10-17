@@ -43,12 +43,12 @@ export const gelAllWebHooks = () => async dispatch => {
 /*
 * Http Delete request to delete WebHook
 */
-export const deleteWebHook = web_hook_identifier => async dispatch => {
-  if ((window.confirm(`Are you sure to delete web hook ${web_hook_identifier}`))) {
-    await axios.delete(DELETE_WEBHOOK_PATH + `/${web_hook_identifier}`);
+export const deleteWebHook = webHook => async dispatch => {
+  if ((window.confirm(`Are you sure to delete web hook ${webHook.name}`))) {
+    await axios.delete(DELETE_WEBHOOK_PATH + `/${webHook.id}`);
     dispatch({
       type: DELETE_WEBHOOK,
-      payload: web_hook_identifier
+      payload: webHook.id
     });
   }
 
@@ -67,6 +67,7 @@ export const getWebHook = (web_hook_id, history) => async dispatch => {
     });
 
   } catch (error) {
+    console.log(error);
     history.push("/dashboard");
   }
 }
