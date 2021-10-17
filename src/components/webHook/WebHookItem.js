@@ -24,8 +24,10 @@ class WebHookItem extends Component {
               </div>
               <div className="col-lg-6 col-md-4 col-8">
                 <h3>{webHook.name}</h3>
-                <h10>{webHook.url}</h10>
-                <p>{webHook.type}</p>
+                <ul>
+                  <li>{webHook.url}</li>
+                  <li>{webHook.type}</li>
+                </ul>
               </div>
               <div className="col-md-4 d-none d-lg-block">
                 <ul className="list-group">

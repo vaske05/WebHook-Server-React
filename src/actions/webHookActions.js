@@ -67,6 +67,7 @@ export const getWebHook = (web_hook_id, history) => async dispatch => {
     });
 
   } catch (error) {
+    console.log(error);
     history.push("/dashboard");
   }
 }

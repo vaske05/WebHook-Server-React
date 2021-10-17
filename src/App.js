@@ -15,20 +15,21 @@ import {startLogoutTimer} from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/SecureRoute";
 import Dashboard from "./components/Dashboard";
 import AddWebHook from "./components/webHook/AddWebHook";
+import UpdateWebHook from "./components/webHook/UpdateWebHook";
 
 
 /*
  * Set token and start timer logout when page gets reloaded
  */
 const token = localStorage.getItem("jwtToken");
-if(token) {
-    setJwtToken(token);
-    const decodedToken = jwt_decode(token);
-    store.dispatch({
-        type: SET_CURRENT_USER,
-        payload: decodedToken
-    });
-    startLogoutTimer(decodedToken.exp)(store.dispatch);
+if (token) {
+  setJwtToken(token);
+  const decodedToken = jwt_decode(token);
+  store.dispatch({
+    type: SET_CURRENT_USER,
+    payload: decodedToken
+  });
+  startLogoutTimer(decodedToken.exp)(store.dispatch);
 }
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
             <Switch>
               <SecuredRoute exact path="/dashboard" component={Dashboard}/>
               <SecuredRoute exact path="/addWebHook" component={AddWebHook}/>
+              <SecuredRoute exact path="/updateWebHook/:id" component={UpdateWebHook}/>
 
             </Switch>
 

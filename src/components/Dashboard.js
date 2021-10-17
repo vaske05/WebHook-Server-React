@@ -9,7 +9,6 @@ import WebHookItem from "./webHook/WebHookItem";
 
 class Dashboard extends Component {
 
-
   constructor() {
     super();
     this.state = {
@@ -53,7 +52,7 @@ class Dashboard extends Component {
                 {
                   /* WebHook Item Component */
 
-                  //If data is loaded show "No projects found" or found projects. Otherwise show loader animation
+                  //If data is loaded show "No web hooks found" or found web hooks. Otherwise show loader animation
                   this.state.isLoaded ? (webHooks.length < 1 ?
                       <div className="alert alert-heading text-center" role="alert">No web hooks found.</div> :
                       webHooks.map(webHook => (
