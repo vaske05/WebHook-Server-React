@@ -37,24 +37,35 @@ export const login = (LoginRequest, history) => async dispatch => {
     try {
         // post => LoginRequest
         const res = await axios.post(USER_LOGIN_PATH, LoginRequest);
+
         // extract token from res.data
-        const { token } = res.data;
-        // store the token in localStorage
+        const {token} = res.data;
+        // store the token in local storage
         localStorage.setItem("jwtToken", token);
+
+        // extract api secret key from res.data
+        const {secretKey} = res.data;
+        // store api secret key in local storage
+        localStorage.setItem("secretKey", secretKey)
+
         // set our token in header ***
         setJwtToken(token);
+
         // decode the token
         const decodedToken = jwt_decode(token);
+
         // dispatch to our securityReducer
         dispatch({
             type: SET_CURRENT_USER,
             payload: decodedToken
         });
+
         //Clear errors in state
         dispatch({
             type: GET_ERRORS,
             payload: {}
         });
+
         //Timer logout when token gets expired
         //dispatch(automaticLogout(decodedToken.exp));
         startLogoutTimer(decodedToken.exp, history)(dispatch)
@@ -73,6 +84,7 @@ export const login = (LoginRequest, history) => async dispatch => {
 export const logout = (history) => async dispatch => {
     clearTimeout(timeoutId); // turn off logout timer function
     localStorage.removeItem("jwtToken"); // remove token from local storage
+    localStorage.removeItem("secretKey")
     setJwtToken(false); // Delete header
     dispatch({
         type: SET_CURRENT_USER,
