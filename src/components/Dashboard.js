@@ -6,7 +6,6 @@ import CreateWebHookButton from "./webHook/CreateWebHookButton";
 import {gelAllWebHooks} from "../actions/webHookActions";
 import WebHookItem from "./webHook/WebHookItem";
 
-
 class Dashboard extends Component {
 
   constructor() {
@@ -32,7 +31,6 @@ class Dashboard extends Component {
     this.setState({isLoaded: true});
   }
 
-
   render() {
 
     const {webHooks} = this.props.webHook;
@@ -46,8 +44,13 @@ class Dashboard extends Component {
                 <h1 className="display-4 text-center">Web Hooks</h1>
                 <br/>
                 <CreateWebHookButton/>
+                <div className="api-info">
+                  <p>Authorization key: API-KEY</p>
+                  <p>Authorization value: {localStorage.getItem("secretKey")}</p>
+                </div>
                 <br/>
-                <hr/>
+
+                <hr className="divider-line"/>
 
                 {
                   /* WebHook Item Component */

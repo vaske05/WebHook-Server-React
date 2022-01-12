@@ -16,6 +16,7 @@ import SecuredRoute from "./securityUtils/SecureRoute";
 import Dashboard from "./components/Dashboard";
 import AddWebHook from "./components/webHook/AddWebHook";
 import UpdateWebHook from "./components/webHook/UpdateWebHook";
+import WebHookInfo from "./components/webHook/WebHookInfo";
 
 
 /*
@@ -49,7 +50,7 @@ function App() {
               <SecuredRoute exact path="/dashboard" component={Dashboard}/>
               <SecuredRoute exact path="/addWebHook" component={AddWebHook}/>
               <SecuredRoute exact path="/updateWebHook/:id" component={UpdateWebHook}/>
-
+              <SecuredRoute exact path="/webHookInfo/:id" component={WebHookInfo}/>
             </Switch>
 
           </div>

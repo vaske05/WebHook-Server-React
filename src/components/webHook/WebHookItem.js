@@ -31,6 +31,11 @@ class WebHookItem extends Component {
               </div>
               <div className="col-md-4 d-none d-lg-block">
                 <ul className="list-group">
+                  <Link to={`/webHookInfo/${webHook.id}`}>
+                    <li className="list-group-item update">
+                      <i className="fa fa-success pr-1"> Info</i>
+                    </li>
+                  </Link>
                   <Link to={`/updateWebHook/${webHook.id}`}>
                     <li className="list-group-item update">
                       <i className="fa fa-edit pr-1"> Update</i>

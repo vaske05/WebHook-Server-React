@@ -37,6 +37,23 @@
 /*  }*/
 /*}*/
 
+.divider-line {
+  margin-top: 2rem;
+}
+
+.api-info {
+  float: right;
+  width: auto;
+}
+
+.width70px {
+  width: 70px;
+}
+
+.inputWidth {
+  width: 658px !important;
+}
+
 .form {
   margin-top: 10px;
 }
