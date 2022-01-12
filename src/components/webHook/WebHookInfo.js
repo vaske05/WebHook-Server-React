@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {createWebHook, getWebHook} from "../../actions/webHookActions";
 import {connect} from "react-redux";
 
-class UpdateWebHook extends Component {
+class WebHookInfo extends Component {
 
   constructor(props) {
     super(props);
@@ -129,7 +129,7 @@ class UpdateWebHook extends Component {
   }
 }
 
-UpdateWebHook.propTypes = {
+WebHookInfo.propTypes = {
   createWebHook: PropTypes.func.isRequired,
   getWebHook: PropTypes.func.isRequired,
   webHook: PropTypes.object.isRequired,
@@ -140,4 +140,4 @@ const mapStateToProps = (state) => ({
 });
 
 //Connect React component to a Redux store.
-export default connect(mapStateToProps, {createWebHook, getWebHook})(UpdateWebHook);
+export default connect(mapStateToProps, {createWebHook, getWebHook})(WebHookInfo);
