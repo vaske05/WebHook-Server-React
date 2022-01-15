@@ -37,6 +37,14 @@
 /*  }*/
 /*}*/
 
+a:hover {
+  text-decoration: none !important;
+}
+
+.list-group-item.delete {
+  cursor: pointer;
+}
+
 .divider-line {
   margin-top: 2rem;
 }
