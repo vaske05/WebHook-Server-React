@@ -1,10 +1,12 @@
 import React, {Component} from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
-import {createWebHook, getWebHook} from "../../actions/webHookActions";
+import {createWebHook, getCountriesForCovidOrAirSelect, getWebHook} from "../../actions/webHookActions";
 import {connect} from "react-redux";
 import Select from "react-select";
+import Loader from "../layout/Loader";
 
+// TODO: Add WH fields
 class UpdateWebHook extends Component {
 
   constructor() {
@@ -15,16 +17,22 @@ class UpdateWebHook extends Component {
       name: "",
       type: "",
       url: "",
+      country: "",
+      city: "",
+      region: "",
+      isLoaded: false,
       errors: {},
     };
     this.onChange = this.onChange.bind(this); //binding
     this.onChangeSelect = this.onChangeSelect.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleLoading = this.handleLoading.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const {id} = this.props.match.params;
     this.props.getWebHook(id, this.props.history);
+    await this.handleLoading();
   }
 
   //life cycle hooks
@@ -33,10 +41,11 @@ class UpdateWebHook extends Component {
       id,
       name,
       type,
-      url
-    } = nextProps.webHook;
+      url,
+      country
+    } = nextProps.webHookData.webHook;
 
-    this.setState({id, name, type, url});
+    this.setState({id, name, type, url, country});
 
     if (nextProps.errors) {
       this.setState({errors: nextProps.errors});
@@ -57,17 +66,24 @@ class UpdateWebHook extends Component {
       id: this.state.id,
       name: this.state.name,
       type: this.state.type,
-      url: this.state.url
+      url: this.state.url,
+      country: this.state.country
     };
     this.props.createWebHook(newWebHook, this.props.history);
+  }
+
+  async handleLoading() {
+    await this.props.getCountriesForCovidOrAirSelect(this.state.type);
+    this.setState({isLoaded: true});
   }
 
   render() {
     const {errors} = this.state;
     const whTypes = [
-      {value: 'AIR_DATA', label: 'AIR_DATA', name: "type"},
-      {value: 'COVID_DATA', label: 'COVID_DATA', name: "type"}
+      {value: 'COVID_DATA', label: 'COVID_DATA', name: "type"},
+      {value: 'AIR_DATA', label: 'AIR_DATA', name: "type"}
     ];
+    const {countriesForSelect} = this.props.webHookData;
     return (
         <div className="web_hook">
           <div className="container">
@@ -123,6 +139,23 @@ class UpdateWebHook extends Component {
                     )}
                   </div>
 
+                  {
+                    /* Select wh data */
+
+                    this.state.isLoaded ? (<div className="form-group">
+                      <h6>Select country:</h6>
+                      <Select className={classnames("", {
+                        "is-invalid border-input-red": errors.type,
+                      })} options={countriesForSelect} name="type"
+                              value={countriesForSelect.filter(country => this.state.country === country.value)}
+                              onChange={this.onChangeSelect}/>
+                      {errors.country && (
+                          <div className="invalid-feedback">{errors.country}</div>
+                      )}
+                    </div>) : (<Loader/>)
+
+                    /* End of Select wh data */
+                  }
 
                   <input
                       type="submit"
@@ -143,12 +176,13 @@ UpdateWebHook.propTypes = {
   getWebHook: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
   webHook: PropTypes.object.isRequired,
+  getCountriesForCovidOrAirSelect: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
   errors: state.errors,
-  webHook: state.webHook.webHook
+  webHookData: state.webHookData
 });
 
 //Connect React component to a Redux store.
-export default connect(mapStateToProps, {createWebHook, getWebHook})(UpdateWebHook);
+export default connect(mapStateToProps, {createWebHook, getWebHook, getCountriesForCovidOrAirSelect})(UpdateWebHook);
