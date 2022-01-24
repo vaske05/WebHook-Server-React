@@ -6,5 +6,5 @@ import webHookReducer from "./webHookReducer";
 export default combineReducers ({
     errors: errorsReducer,
     security: securityReducer,
-    webHook: webHookReducer
+    webHookData: webHookReducer
 });

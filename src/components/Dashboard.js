@@ -33,7 +33,7 @@ class Dashboard extends Component {
 
   render() {
 
-    const {webHooks} = this.props.webHook;
+    const {webHooks} = this.props.webHookData;
     let itemCounter = 0;
 
     return (
@@ -75,12 +75,12 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
   gelAllWebHooks: PropTypes.func.isRequired,
-  webHook: PropTypes.object.isRequired,
+  webHookData: PropTypes.object.isRequired,
   security: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-  webHook: state.webHook, // from index.js - combine reducers
+  webHookData: state.webHookData, // from index.js - combine reducers
   security: state.security
 })
 

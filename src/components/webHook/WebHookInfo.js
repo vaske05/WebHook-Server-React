@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {createWebHook, getWebHook} from "../../actions/webHookActions";
 import {connect} from "react-redux";
+import {AIR_DATA} from "../../constants";
+import Loader from "../layout/Loader";
 
 class WebHookInfo extends Component {
 
@@ -12,48 +14,37 @@ class WebHookInfo extends Component {
       id: "",
       name: "",
       type: "",
-      url: ""
+      url: "",
+      country: "",
+      region: "",
+      city: "",
+      isLoaded: false
     };
-    this.onChange = this.onChange.bind(this); //binding
-    this.onChangeSelect = this.onChangeSelect.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.handleLoading = this.handleLoading.bind(this);
   }
 
   componentDidMount() {
-    const {id} = this.props.match.params;
-    this.props.getWebHook(id, this.props.history);
-    // this.props.
+    setTimeout(this.handleLoading, 400);
   }
 
-  //life cycle hooks
+  async handleLoading() {
+    const {id} = this.props.match.params;
+    await this.props.getWebHook(id, this.props.history);
+    this.setState({isLoaded: true});
+  }
+
+//life cycle hooks
   componentWillReceiveProps(nextProps, nextContext) {
     const {
       id,
       name,
       type,
-      url
+      url,
+      country,
+      region,
+      city
     } = nextProps.webHook;
-
-    this.setState({id, name, type, url});
-  }
-
-  onChange(e) {
-    this.setState({[e.target.name]: e.target.value});
-  }
-
-  onChangeSelect(e) {
-    this.setState({[e.name]: e.value});
-  }
-
-  onSubmit(e) {
-    e.preventDefault(); // turn off reload
-    const newWebHook = {
-      id: this.state.id,
-      name: this.state.name,
-      type: this.state.type,
-      url: this.state.url
-    };
-    this.props.createWebHook(newWebHook, this.props.history);
+    this.setState({id, name, type, url, country, region, city});
   }
 
   render() {
@@ -67,60 +58,88 @@ class WebHookInfo extends Component {
                   Edit Web Hook
                 </h5>
                 <hr/>
-                <form onSubmit={this.onSubmit}>
-                  <div className="form-group">
-                    <h6 className="width70px">Type:</h6>
-                    <input
-                        disabled={true}
-                        type="text"
-                        className="form-control form-control-lg"
-                        placeholder="Web Hook Name"
-                        name="name"
-                        value={this.state.type}
-                        onChange={this.onChange}
-                    />
-                  </div>
+                {
+                  this.state.isLoaded ? <form>
+                    <div className="form-group">
+                      <h6 className="width70px">Type:</h6>
+                      <input
+                          disabled={true}
+                          type="text"
+                          className="form-control form-control-lg"
+                          placeholder="Web Hook Name"
+                          name="name"
+                          value={this.state.type}
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <h6 className="width70px">Name:</h6>
-                    <input
-                        disabled={true}
-                        type="text"
-                        className="form-control form-control-lg"
-                        placeholder="Web Hook Name"
-                        name="name"
-                        value={this.state.name}
-                        onChange={this.onChange}
-                    />
-                  </div>
+                    <div className="form-group">
+                      <h6 className="width70px">Name:</h6>
+                      <input
+                          disabled={true}
+                          type="text"
+                          className="form-control form-control-lg"
+                          placeholder="Web Hook Name"
+                          name="name"
+                          value={this.state.name}
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <h6>Target URL:</h6>
-                    <input
-                        disabled={true}
-                        type="text"
-                        className="form-control form-control-lg"
-                        placeholder="Target url"
-                        name="url"
-                        value={this.state.url}
-                        onChange={this.onChange}
-                    />
-                  </div>
+                    <div className="form-group">
+                      <h6>Target URL:</h6>
+                      <input
+                          disabled={true}
+                          type="text"
+                          className="form-control form-control-lg"
+                          placeholder="Target url"
+                          name="url"
+                          value={this.state.url}
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <h6>Target URL:</h6>
-                    <input
-                        disabled={true}
-                        type="text"
-                        className="form-control form-control-lg"
-                        placeholder="Target url"
-                        name="url"
-                        value={this.state.url}
-                        onChange={this.onChange}
-                    />
-                  </div>
+                    <div className="form-group">
+                      <h6>Country:</h6>
+                      <input
+                          disabled={true}
+                          type="text"
+                          className="form-control form-control-lg"
+                          placeholder="Country"
+                          name="url"
+                          value={this.state.country}
+                      />
+                    </div>
 
-                </form>
+                    {
+                      this.state.type === AIR_DATA ?
+                          <div>
+                            <div className="form-group">
+                              <h6>Region:</h6>
+                              <input
+                                  disabled={true}
+                                  type="text"
+                                  className="form-control form-control-lg"
+                                  placeholder="Country"
+                                  name="url"
+                                  value={this.state.region}
+                                  onChange={this.onChange}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <h6>City:</h6>
+                              <input
+                                  disabled={true}
+                                  type="text"
+                                  className="form-control form-control-lg"
+                                  placeholder="Country"
+                                  name="url"
+                                  value={this.state.city}
+                                  onChange={this.onChange}
+                              />
+                            </div>
+                          </div> : <div/>
+                    }
+                  </form> : <Loader/>
+
+                }
               </div>
             </div>
           </div>
@@ -136,7 +155,7 @@ WebHookInfo.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  webHook: state.webHook.webHook
+  webHook: state.webHookData.webHook
 });
 
 //Connect React component to a Redux store.
