@@ -1,17 +1,23 @@
-import React, {Component} from "react";
+import React from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
-import {createWebHook, getCountriesForCovidOrAirSelect, getWebHook} from "../../actions/webHookActions";
+import {
+  createWebHook,
+  getCitiesForAirSelect,
+  getCountriesForCovidOrAirSelect,
+  getRegionsForAirSelect,
+  getWebHook
+} from "../../actions/webHookActions";
 import {connect} from "react-redux";
 import Select from "react-select";
 import Loader from "../layout/Loader";
+import {AIR_DATA, COVID_DATA} from "../../constants";
+import WebHookBase from "./WebHookBase";
 
-// TODO: Add WH fields
-class UpdateWebHook extends Component {
+class UpdateWebHook extends WebHookBase {
 
   constructor() {
     super();
-
     this.state = {
       id: "",
       name: "",
@@ -23,30 +29,35 @@ class UpdateWebHook extends Component {
       isLoaded: false,
       errors: {},
     };
-    this.onChange = this.onChange.bind(this); //binding
-    this.onChangeSelect = this.onChangeSelect.bind(this);
+    // binding
+    this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.handleLoading = this.handleLoading.bind(this);
+    this.initializeState = this.initializeState.bind(this);
+    this.handleInitialDataLoading = this.handleInitialDataLoading.bind(this);
   }
 
   async componentDidMount() {
     const {id} = this.props.match.params;
-    this.props.getWebHook(id, this.props.history);
-    await this.handleLoading();
+    await this.props.getWebHook(id, this.props.history);
+    await this.initializeState();
+    await this.handleInitialDataLoading();
   }
 
-  //life cycle hooks
-  componentWillReceiveProps(nextProps, nextContext) {
+  async initializeState() {
     const {
       id,
       name,
       type,
       url,
-      country
-    } = nextProps.webHookData.webHook;
+      country,
+      region,
+      city
+    } = this.props.webHookData.webHook;
+    this.setState({id, name, type, url, country, region, city});
+  }
 
-    this.setState({id, name, type, url, country});
-
+  //life cycle hooks
+  componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.errors) {
       this.setState({errors: nextProps.errors});
     }
@@ -56,10 +67,6 @@ class UpdateWebHook extends Component {
     this.setState({[e.target.name]: e.target.value});
   }
 
-  onChangeSelect(e) {
-    this.setState({[e.name]: e.value});
-  }
-
   onSubmit(e) {
     e.preventDefault(); // turn off reload
     const newWebHook = {
@@ -67,13 +74,20 @@ class UpdateWebHook extends Component {
       name: this.state.name,
       type: this.state.type,
       url: this.state.url,
-      country: this.state.country
+      country: this.state.country,
+      region: this.state.region,
+      city: this.state.city
     };
     this.props.createWebHook(newWebHook, this.props.history);
   }
 
-  async handleLoading() {
-    await this.props.getCountriesForCovidOrAirSelect(this.state.type);
+  async handleInitialDataLoading() {
+    const {webHook} = this.props.webHookData;
+    await this.props.getCountriesForCovidOrAirSelect(webHook.type);
+    if (webHook.type === AIR_DATA) {
+      await this.props.getRegionsForAirSelect(webHook.country);
+      await this.props.getCitiesForAirSelect(webHook.country, webHook.region);
+    }
     this.setState({isLoaded: true});
   }
 
@@ -84,6 +98,8 @@ class UpdateWebHook extends Component {
       {value: 'AIR_DATA', label: 'AIR_DATA', name: "type"}
     ];
     const {countriesForSelect} = this.props.webHookData;
+    const {regionsForSelect} = this.props.webHookData;
+    const {citiesForSelect} = this.props.webHookData;
     return (
         <div className="web_hook">
           <div className="container">
@@ -98,7 +114,7 @@ class UpdateWebHook extends Component {
                     <h6>Select Web Hook type:</h6>
                     <Select className={classnames("", {
                       "is-invalid border-input-red": errors.type,
-                    })} options={whTypes} name="type" onChange={this.onChangeSelect}
+                    })} options={whTypes} name="type" onChange={this.onChangeWhTypeSelect}
                             value={whTypes.filter(type => this.state.type === type.value)}/>
                     {errors.type && (
                         <div className="invalid-feedback">{errors.type}</div>
@@ -140,21 +156,47 @@ class UpdateWebHook extends Component {
                   </div>
 
                   {
-                    /* Select wh data */
-
-                    this.state.isLoaded ? (<div className="form-group">
+                    this.state.type === COVID_DATA ? (this.state.isLoaded ? (<div className="form-group">
+                      {/*COVID SELECT INPUT*/}
                       <h6>Select country:</h6>
                       <Select className={classnames("", {
-                        "is-invalid border-input-red": errors.type,
-                      })} options={countriesForSelect} name="type"
-                              value={countriesForSelect.filter(country => this.state.country === country.value)}
-                              onChange={this.onChangeSelect}/>
+                        "is-invalid border-input-red": errors.country,
+                      })} options={countriesForSelect} name="country"
+                              value={countriesForSelect.filter(c => this.state.country === c.value)}
+                              onChange={this.onChangeCountrySelect}/>
                       {errors.country && (
                           <div className="invalid-feedback">{errors.country}</div>
                       )}
-                    </div>) : (<Loader/>)
-
-                    /* End of Select wh data */
+                    </div>) : (<Loader/>)) : (this.state.isLoaded ? (<div className="form-group">
+                      {/*AIR SELECT INPUTS*/}
+                      <h6>Select country:</h6>
+                      <Select className={classnames("", {
+                        "is-invalid border-input-red": errors.type,
+                      })} options={countriesForSelect} name="country"
+                              value={countriesForSelect.filter(c => this.state.country === c.value)}
+                              onChange={this.onChangeCountrySelect}/>
+                      {errors.country && (
+                          <div className="invalid-feedback">{errors.country}</div>
+                      )}
+                      <h6>Select region:</h6>
+                      <Select className={classnames("", {
+                        "is-invalid border-input-red": errors.type,
+                      })} options={regionsForSelect} name="region"
+                              value={regionsForSelect.filter(r => this.state.region === r.value)}
+                              onChange={this.onChangeRegionSelect}/>
+                      {errors.country && (
+                          <div className="invalid-feedback">{errors.country}</div>
+                      )}
+                      <h6>Select city:</h6>
+                      <Select className={classnames("", {
+                        "is-invalid border-input-red": errors.type,
+                      })} options={citiesForSelect} name="city"
+                              value={citiesForSelect.filter(c => this.state.city === c.value)}
+                              onChange={this.onChangeCitySelect}/>
+                      {errors.city && (
+                          <div className="invalid-feedback">{errors.city}</div>
+                      )}
+                    </div>) : (<Loader/>))
                   }
 
                   <input
@@ -174,9 +216,11 @@ class UpdateWebHook extends Component {
 UpdateWebHook.propTypes = {
   createWebHook: PropTypes.func.isRequired,
   getWebHook: PropTypes.func.isRequired,
+  getCountriesForCovidOrAirSelect: PropTypes.func.isRequired,
+  getRegionsForAirSelect: PropTypes.func.isRequired,
+  getCitiesForAirSelect: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
-  webHook: PropTypes.object.isRequired,
-  getCountriesForCovidOrAirSelect: PropTypes.func.isRequired
+  webHook: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
@@ -185,4 +229,10 @@ const mapStateToProps = (state) => ({
 });
 
 //Connect React component to a Redux store.
-export default connect(mapStateToProps, {createWebHook, getWebHook, getCountriesForCovidOrAirSelect})(UpdateWebHook);
+export default connect(mapStateToProps, {
+  createWebHook,
+  getWebHook,
+  getCountriesForCovidOrAirSelect,
+  getRegionsForAirSelect,
+  getCitiesForAirSelect
+})(UpdateWebHook);

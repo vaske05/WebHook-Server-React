@@ -55,7 +55,7 @@ class WebHookInfo extends Component {
             <div className="row">
               <div className="col-md-8 m-auto">
                 <h5 className="display-4 text-center">
-                  Edit Web Hook
+                  Web Hook info
                 </h5>
                 <hr/>
                 {
