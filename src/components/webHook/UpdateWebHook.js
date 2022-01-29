@@ -94,8 +94,8 @@ class UpdateWebHook extends WebHookBase {
   render() {
     const {errors} = this.state;
     const whTypes = [
-      {value: 'COVID_DATA', label: 'COVID_DATA', name: "type"},
-      {value: 'AIR_DATA', label: 'AIR_DATA', name: "type"}
+      {value: COVID_DATA, label: COVID_DATA, name: "type"},
+      {value: AIR_DATA, label: AIR_DATA, name: "type"}
     ];
     const {countriesForSelect} = this.props.webHookData;
     const {regionsForSelect} = this.props.webHookData;
@@ -105,8 +105,8 @@ class UpdateWebHook extends WebHookBase {
           <div className="container">
             <div className="row">
               <div className="col-md-8 m-auto">
-                <h5 className="display-4 text-center">
-                  Edit Web Hook
+                <h5 className="secondary-header display-4">
+                  Update Web Hook
                 </h5>
                 <hr/>
                 <form onSubmit={this.onSubmit}>

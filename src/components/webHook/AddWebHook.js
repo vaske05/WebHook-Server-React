@@ -93,8 +93,8 @@ class AddWebHook extends WebHookBase {
           <div className="container">
             <div className="row">
               <div className="col-md-8 m-auto">
-                <h5 className="display-4 text-center">
-                  Create/Edit Web Hook
+                <h5 className="secondary-header display-4">
+                  Add Web Hook
                 </h5>
                 <hr/>
                 <form onSubmit={this.onSubmit}>

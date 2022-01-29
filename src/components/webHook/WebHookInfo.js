@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {createWebHook, getWebHook} from "../../actions/webHookActions";
 import {connect} from "react-redux";
-import {AIR_DATA} from "../../constants";
+import {AIR_DATA, AIR_WH_JSON_SAMPLE, COVID_WH_JSON_SAMPLE} from "../../constants";
 import Loader from "../layout/Loader";
 
 class WebHookInfo extends Component {
@@ -33,7 +33,7 @@ class WebHookInfo extends Component {
     this.setState({isLoaded: true});
   }
 
-//life cycle hooks
+  //life cycle hooks
   componentWillReceiveProps(nextProps, nextContext) {
     const {
       id,
@@ -53,11 +53,15 @@ class WebHookInfo extends Component {
         <div className="web_hook">
           <div className="container">
             <div className="row">
-              <div className="col-md-8 m-auto">
-                <h5 className="display-4 text-center">
+              <div className="col-md-12 m-auto">
+                <h5 className="secondary-header display-4">
                   Web Hook info
                 </h5>
                 <hr/>
+              </div>
+
+              <div className="col-md-8 m-auto">
+
                 {
                   this.state.isLoaded ? <form>
                     <div className="form-group">
@@ -84,16 +88,30 @@ class WebHookInfo extends Component {
                       />
                     </div>
 
-                    <div className="form-group">
-                      <h6>Target URL:</h6>
-                      <input
-                          disabled={true}
-                          type="text"
-                          className="form-control form-control-lg"
-                          placeholder="Target url"
-                          name="url"
-                          value={this.state.url}
-                      />
+                    <div className="row margin-bottom-1">
+                      <div className="col-md-10">
+                        <h6>Target URL:</h6>
+                        <input
+                            disabled={true}
+                            type="text"
+                            className="form-control form-control-lg"
+                            placeholder="Target url"
+                            name="url"
+                            value={this.state.url}
+                        />
+                      </div>
+                      <div className="col-md-2 padding-left-0">
+                        <h6>Method:</h6>
+                        <input
+                            disabled={true}
+                            type="text"
+                            className="form-control form-control-lg"
+                            placeholder="Target url"
+                            name="url"
+                            value="POST"
+                        />
+
+                      </div>
                     </div>
 
                     <div className="form-group">
@@ -140,6 +158,18 @@ class WebHookInfo extends Component {
                   </form> : <Loader/>
 
                 }
+              </div>
+              <div className="col-md-4">
+                <p className="margin-bottom-0">Sample JSON:</p>
+                <div className="col-md-12 json-container">
+                <pre className="margin-bottom-0 height-18rem">
+                <code>
+                  {
+                    JSON.stringify(this.state.type === AIR_DATA ? AIR_WH_JSON_SAMPLE : COVID_WH_JSON_SAMPLE, null, 2)
+                  }
+                </code>
+              </pre>
+                </div>
               </div>
             </div>
           </div>

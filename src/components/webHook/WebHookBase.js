@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import {AIR_DATA, COVID_DATA} from "../../constants";
 
 class WebHookBase extends Component {
