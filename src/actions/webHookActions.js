@@ -1,12 +1,12 @@
 import axios from "axios";
 import {
-  DELETE_WEBHOOK,
-  GET_AIR_SELECT_CITY,
-  GET_AIR_SELECT_REGION,
-  GET_COVID_OR_AIR_SELECT_COUNTRIES,
-  GET_ERRORS,
-  GET_WEBHOOK,
-  GET_WEBHOOKS
+    DELETE_WEBHOOK,
+    GET_AIR_SELECT_CITY,
+    GET_AIR_SELECT_REGION,
+    GET_COVID_OR_AIR_SELECT_COUNTRIES,
+    GET_ERRORS,
+    GET_WEBHOOK,
+    GET_WEBHOOKS
 } from "./types";
 import {AIR_DATA, COVID_DATA} from "../constants";
 
@@ -28,31 +28,31 @@ const GET_COVID_SELECT_COUNTRIES_PATH = "/api/v1/wh/getCovidSelectCountries";
 */
 export const createWebHook = (webHook, history) => async dispatch => {
 
-  try {
-    await axios.post(CREATE_WEBHOOK_PATH, webHook);
-    history.push("/dashboard");
-    dispatch({
-      type: GET_ERRORS,
-      payload: {}
-    });
+    try {
+        await axios.post(CREATE_WEBHOOK_PATH, webHook);
+        history.push("/dashboard");
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
+        });
 
-  } catch (error) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data
-    });
-  }
+    } catch (error) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+        });
+    }
 };
 
 /*
-* Http Post request to get all WebHooks from DB
+* Http Post request to get all WebHooks
 */
 export const gelAllWebHooks = () => async dispatch => {
-  const res = await axios.get(GET_WEBHOOKS_PATH);
-  dispatch({
-    type: GET_WEBHOOKS,
-    payload: res.data
-  });
+    const res = await axios.get(GET_WEBHOOKS_PATH);
+    dispatch({
+        type: GET_WEBHOOKS,
+        payload: res.data
+    });
 
 };
 
@@ -60,32 +60,32 @@ export const gelAllWebHooks = () => async dispatch => {
 * Http Delete request to delete WebHook
 */
 export const deleteWebHook = webHook => async dispatch => {
-  if ((window.confirm(`Are you sure to delete web hook ${webHook.name}`))) {
-    await axios.delete(DELETE_WEBHOOK_PATH + `/${webHook.id}`);
-    dispatch({
-      type: DELETE_WEBHOOK,
-      payload: webHook.id
-    });
-  }
+    if ((window.confirm(`Are you sure to delete web hook ${webHook.name}`))) {
+        await axios.delete(DELETE_WEBHOOK_PATH + `/${webHook.id}`);
+        dispatch({
+            type: DELETE_WEBHOOK,
+            payload: webHook.id
+        });
+    }
 
 };
 
 /*
-* Http Get request to grab WebHook
+* Http Get request to get WebHook
 */
 export const getWebHook = (webHookId, history) => async dispatch => {
 
-  try {
-    const res = await axios.get(GET_WEBHOOK_PATH + `/${webHookId}`);
-    dispatch({
-      type: GET_WEBHOOK,
-      payload: res.data
-    });
+    try {
+        const res = await axios.get(GET_WEBHOOK_PATH + `/${webHookId}`);
+        dispatch({
+            type: GET_WEBHOOK,
+            payload: res.data
+        });
 
-  } catch (error) {
-    console.log(error);
-    history.push("/dashboard");
-  }
+    } catch (error) {
+        console.log(error);
+        history.push("/dashboard");
+    }
 }
 
 /*
@@ -93,35 +93,35 @@ export const getWebHook = (webHookId, history) => async dispatch => {
 */
 export const getCountriesForCovidOrAirSelect = (whType) => async dispatch => {
 
-  try {
-    let res;
-    if (whType === COVID_DATA) {
-      res = await axios.get(GET_COVID_SELECT_COUNTRIES_PATH);
-    } else if (whType === AIR_DATA) {
-      res = await axios.get(GET_AIR_SELECT_COUNTRIES_PATH);
+    try {
+        let res;
+        if (whType === COVID_DATA) {
+            res = await axios.get(GET_COVID_SELECT_COUNTRIES_PATH);
+        } else if (whType === AIR_DATA) {
+            res = await axios.get(GET_AIR_SELECT_COUNTRIES_PATH);
+        }
+        let countries = res.data.countries;
+
+        const countriesForSelect = [];
+        countries.forEach(country => {
+            let element = {
+                value: "",
+                label: "",
+                name: "country"
+            };
+            element.value = country;
+            element.label = country;
+            countriesForSelect.push(element);
+
+        });
+        dispatch({
+            type: GET_COVID_OR_AIR_SELECT_COUNTRIES,
+            payload: countriesForSelect
+        });
+
+    } catch (error) {
+        console.log(error);
     }
-    let countries = res.data.countries;
-
-    const countriesForSelect = [];
-    countries.forEach(country => {
-      let element = {
-        value: "",
-        label: "",
-        name: "country"
-      };
-      element.value = country;
-      element.label = country;
-      countriesForSelect.push(element);
-
-    });
-    dispatch({
-      type: GET_COVID_OR_AIR_SELECT_COUNTRIES,
-      payload: countriesForSelect
-    });
-
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 /*
@@ -129,27 +129,27 @@ export const getCountriesForCovidOrAirSelect = (whType) => async dispatch => {
 */
 export const getRegionsForAirSelect = (selectedCountry) => async dispatch => {
 
-  try {
-    let res = await axios.get(GET_AIR_SELECT_REGIONS_PATH, {params: {country: selectedCountry}});
-    let regions = res.data.regions;
-    const regionsForSelect = [];
-    regions.forEach(region => {
-      let element = {
-        value: "",
-        label: "",
-        name: "region"
-      };
-      element.value = region;
-      element.label = region;
-      regionsForSelect.push(element);
-    });
-    dispatch({
-      type: GET_AIR_SELECT_REGION,
-      payload: regionsForSelect
-    });
-  } catch (error) {
-    console.log(error);
-  }
+    try {
+        let res = await axios.get(GET_AIR_SELECT_REGIONS_PATH, {params: {country: selectedCountry}});
+        let regions = res.data.regions;
+        const regionsForSelect = [];
+        regions.forEach(region => {
+            let element = {
+                value: "",
+                label: "",
+                name: "region"
+            };
+            element.value = region;
+            element.label = region;
+            regionsForSelect.push(element);
+        });
+        dispatch({
+            type: GET_AIR_SELECT_REGION,
+            payload: regionsForSelect
+        });
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 /*
@@ -157,26 +157,31 @@ export const getRegionsForAirSelect = (selectedCountry) => async dispatch => {
 */
 export const getCitiesForAirSelect = (selectedCountry, selectedRegion) => async dispatch => {
 
-  try {
-    let res = await axios.get(GET_AIR_SELECT_CITIES_PATH, {params: {country: selectedCountry, region: selectedRegion}});
-    let cities = res.data.cities;
-    const citiesForSelect = [];
-    cities.forEach(city => {
-      let element = {
-        value: "",
-        label: "",
-        name: "city"
-      };
-      element.value = city;
-      element.label = city;
-      citiesForSelect.push(element);
+    try {
+        let res = await axios.get(GET_AIR_SELECT_CITIES_PATH, {
+            params: {
+                country: selectedCountry,
+                region: selectedRegion
+            }
+        });
+        let cities = res.data.cities;
+        const citiesForSelect = [];
+        cities.forEach(city => {
+            let element = {
+                value: "",
+                label: "",
+                name: "city"
+            };
+            element.value = city;
+            element.label = city;
+            citiesForSelect.push(element);
 
-    });
-    dispatch({
-      type: GET_AIR_SELECT_CITY,
-      payload: citiesForSelect
-    });
-  } catch (error) {
-    console.log(error);
-  }
+        });
+        dispatch({
+            type: GET_AIR_SELECT_CITY,
+            payload: citiesForSelect
+        });
+    } catch (error) {
+        console.log(error);
+    }
 };
