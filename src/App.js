@@ -24,39 +24,39 @@ import WebHookInfo from "./components/webHook/WebHookInfo";
  */
 const token = localStorage.getItem("jwtToken");
 if (token) {
-  setJwtToken(token);
-  const decodedToken = jwt_decode(token);
-  store.dispatch({
-    type: SET_CURRENT_USER,
-    payload: decodedToken
-  });
-  startLogoutTimer(decodedToken.exp)(store.dispatch);
+    setJwtToken(token);
+    const decodedToken = jwt_decode(token);
+    store.dispatch({
+        type: SET_CURRENT_USER,
+        payload: decodedToken
+    });
+    startLogoutTimer(decodedToken.exp)(store.dispatch);
 }
 
 function App() {
-  return (
-      <Provider store={store}>
-        <Router>
-          <div className="App">
-            <Header/>
+    return (
+        <Provider store={store}>
+            <Router>
+                <div className="App">
+                    <Header/>
 
-            { /* Public Routes */}
-            <Route exact path="/" component={Landing}/>
-            <Route exact path="/register" component={Register}/>
-            <Route exact path="/login" component={Login}/>
+                    { /* Public Routes */}
+                    <Route exact path="/" component={Landing}/>
+                    <Route exact path="/register" component={Register}/>
+                    <Route exact path="/login" component={Login}/>
 
-            { /*Private Routes*/}
-            <Switch>
-              <SecuredRoute exact path="/dashboard" component={Dashboard}/>
-              <SecuredRoute exact path="/addWebHook" component={AddWebHook}/>
-              <SecuredRoute exact path="/updateWebHook/:id" component={UpdateWebHook}/>
-              <SecuredRoute exact path="/webHookInfo/:id" component={WebHookInfo}/>
-            </Switch>
+                    { /*Private Routes*/}
+                    <Switch>
+                        <SecuredRoute exact path="/dashboard" component={Dashboard}/>
+                        <SecuredRoute exact path="/addWebHook" component={AddWebHook}/>
+                        <SecuredRoute exact path="/updateWebHook/:id" component={UpdateWebHook}/>
+                        <SecuredRoute exact path="/webHookInfo/:id" component={WebHookInfo}/>
+                    </Switch>
 
-          </div>
-        </Router>
-      </Provider>
-  );
+                </div>
+            </Router>
+        </Provider>
+    );
 }
 
 export default App;

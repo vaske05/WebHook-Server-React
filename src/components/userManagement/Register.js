@@ -6,8 +6,8 @@ import classNames from 'classnames';
 
 class Register extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             email: "",
@@ -82,7 +82,6 @@ class Register extends Component {
                                     {
                                         errors.email && (<div className="invalid-feedback">{errors.email}</div>)
                                     }
-
                                 </div>
                                 <div className="form-group">
                                     <input type="password"
